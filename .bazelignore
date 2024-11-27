@@ -1,6 +1,4 @@
-# files or directories Bazel should not read
-# NB: this does NOT follow .gitignore semantics, see
-# https://github.com/bazelbuild/bazel/issues/7093
 node_modules
+pkgs/bar-lib/node_modules
 pkgs/foo-app/node_modules
 pkgs/foo-lib/node_modules

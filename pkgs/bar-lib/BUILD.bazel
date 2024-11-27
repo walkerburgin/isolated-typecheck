@@ -9,7 +9,7 @@ npm_link_all_packages(name = "node_modules")
 ts_project(
     name = "typescript",
     srcs = [
-        "src/Foo.tsx",
+        "src/Bar.tsx",
         "src/index.ts",
     ],
     deps = [":node_modules"],
@@ -32,6 +32,6 @@ js_library(
 )
 
 filegroup(
-    name = "foo-lib",
+    name = "bar-lib",
     srcs = ["pkg", "typescript_typecheck"],
 )
