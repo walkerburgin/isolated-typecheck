@@ -1,0 +1,32 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_swc//swc:defs.bzl", "swc")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_skylib//lib:partial.bzl", "partial")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+ts_project(
+    name = "typescript",
+    srcs = [
+        "src/App.tsx",
+        "src/main.tsx",
+    ],
+    deps = [":node_modules"],
+    transpiler = partial.make(swc, swcrc = ".swcrc"),
+
+    composite = True,
+    incremental = True,
+    out_dir = "dist",
+    root_dir = "src",
+)
+
+js_library(
+    name = "pkg",
+    srcs = [
+        "package.json",
+        "tsconfig.json",
+        ":typescript",
+    ],
+    visibility = ["//visibility:public"],
+)
