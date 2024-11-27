@@ -16,6 +16,7 @@ ts_project(
     deps = [":node_modules"],
     assets = [],
     transpiler = partial.make(swc, swcrc = ".swcrc", out_dir = "dist", root_dir = "src"),
+    isolated_typecheck = True,
 
     composite = True,
     incremental = True,
