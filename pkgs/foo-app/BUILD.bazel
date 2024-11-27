@@ -56,3 +56,8 @@ js_library(
     ],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "foo-app",
+    srcs = ["pkg", "typescript_typecheck"],
+)
