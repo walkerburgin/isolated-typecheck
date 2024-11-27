@@ -22,7 +22,8 @@
         "useBuiltins": false,
         "pragma": "React.createElement",
         "pragmaFrag": "React.Fragment",
-        "importSource": "react"
+        "importSource": "react",
+        "runtime": "automatic"
       }
     },
     "keepClassNames": true

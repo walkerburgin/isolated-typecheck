@@ -1,9 +1,9 @@
-load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_run_binary", "js_run_devserver")
 load("@aspect_rules_swc//swc:defs.bzl", "swc")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazel_skylib//lib:partial.bzl", "partial")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:vite/package_json.bzl", vite_bin = "bin")
+load("@npm//:vite/package_json.bzl", vite = "bin")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -23,12 +23,26 @@ ts_project(
     root_dir = "src",
 )
 
-vite_bin.vite(
+vite.vite_binary(name = "vite_binary")
+
+js_run_binary(
     name = "vite",
+    tool = ":vite_binary",
+    mnemonic = "Vite",
     chdir = "pkgs/foo-app",
-    srcs = ["vite.config.mjs", "index.html", ":typescript"],
+    srcs = ["vite.config.mjs", "index.html", ":typescript"] + glob(["ssl/**"]),
     out_dirs = ["bundle"],
     args = ["build", "--config", "vite.config.mjs"],
+    include_types = False,
+    include_transitive_types = False,
+)
+
+js_run_devserver(
+    name = "dev",
+    tool = ":vite_binary",
+    chdir = "pkgs/foo-app",
+    data = ["vite.config.mjs", "index.html", ":typescript"] + glob(["ssl/**"]),
+    args = ["--config", "vite.config.mjs", "--clearScreen", "false"],
     include_types = False,
     include_transitive_types = False,
 )
