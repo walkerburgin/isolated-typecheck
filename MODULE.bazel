@@ -31,6 +31,3 @@ rules_ts_ext = use_extension(
 )
 rules_ts_ext.deps()
 use_repo(rules_ts_ext, "npm_typescript")
-
-
-

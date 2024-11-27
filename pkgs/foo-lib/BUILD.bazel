@@ -13,7 +13,7 @@ ts_project(
         "src/index.ts",
     ],
     deps = [":node_modules"],
-    transpiler = partial.make(swc, swcrc = ".swcrc"),
+    transpiler = partial.make(swc, swcrc = ".swcrc", out_dir = "dist", root_dir = "src"),
 
     composite = True,
     incremental = True,

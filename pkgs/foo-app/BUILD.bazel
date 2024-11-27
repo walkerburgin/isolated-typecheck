@@ -3,6 +3,7 @@ load("@aspect_rules_swc//swc:defs.bzl", "swc")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazel_skylib//lib:partial.bzl", "partial")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -13,7 +14,8 @@ ts_project(
         "src/main.tsx",
     ],
     deps = [":node_modules"],
-    transpiler = partial.make(swc, swcrc = ".swcrc"),
+    assets = [],
+    transpiler = partial.make(swc, swcrc = ".swcrc", out_dir = "dist", root_dir = "src"),
 
     composite = True,
     incremental = True,
@@ -21,12 +23,22 @@ ts_project(
     root_dir = "src",
 )
 
+vite_bin.vite(
+    name = "vite",
+    chdir = "pkgs/foo-app",
+    srcs = ["vite.config.mjs", "index.html", ":typescript"],
+    out_dirs = ["bundle"],
+    args = ["build", "--config", "vite.config.mjs"],
+    include_types = False,
+    include_transitive_types = False,
+)
+
 js_library(
     name = "pkg",
     srcs = [
         "package.json",
         "tsconfig.json",
-        ":typescript",
+        ":vite",
     ],
     visibility = ["//visibility:public"],
 )
